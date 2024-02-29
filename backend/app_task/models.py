@@ -3,6 +3,8 @@ from django.db import models
 
 
 class User(AbstractUser):
+    """ Модель пользователей """
+
     teacher = models.BooleanField(default=False, verbose_name="Преподаватель")
     student = models.BooleanField(default=True, verbose_name="Студент")
 
@@ -20,6 +22,7 @@ class User(AbstractUser):
 # Определить, каким образом мы будем понимать, что у пользователя(клиент/студент) есть доступ к продукту. (2 балл)
 class Product(models.Model):
     """ Продукт """
+
     author = models.ForeignKey(User, to_field='username', related_name='author', on_delete=models.CASCADE,
                                verbose_name="Автор/Преподаватель")
     name = models.CharField(max_length=200, unique=True, verbose_name="Название")
@@ -60,6 +63,7 @@ class StudentsToProduct(models.Model):
 # В уроке должна быть базовая информация: название, ссылка на видео. (1 балл)
 class Lesson(models.Model):
     """ Урок """
+
     product_id = models.ForeignKey(Product, related_name="lesson", on_delete=models.CASCADE, verbose_name="Урок")
     name = models.CharField(max_length=200, unique=True, verbose_name="Название урока")
     url_video = models.URLField(max_length=200, verbose_name="Ссылка на видео")
@@ -79,6 +83,7 @@ class Lesson(models.Model):
 
 class Group(models.Model):
     """ Учебная группа """
+
     product_id = models.ForeignKey(Product, related_name="group", on_delete=models.CASCADE, verbose_name="Группа")
     name = models.CharField(max_length=15, unique=True, verbose_name="Название группы")
     min_quantity = models.IntegerField(blank=True, null=True, verbose_name="min кол.")

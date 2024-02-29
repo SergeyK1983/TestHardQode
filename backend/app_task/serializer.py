@@ -23,7 +23,6 @@ class ProductSerializer(serializers.ModelSerializer):
     """ Вывод информации о продуктах """
 
     author = UserSerializer()
-    # lesson = LessonSerializer(many=True)
     lesson_count = serializers.SerializerMethodField('get_lesson_count')
 
     class Meta:
@@ -33,4 +32,13 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_lesson_count(self, instance):
         return instance.get_lesson_count
 
+
+class ProductLessonsSerializer(serializers.ModelSerializer):
+    """ Вывод информации о продукте с уроками """
+
+    lesson = LessonSerializer(many=True)
+
+    class Meta:
+        model = Product
+        fields = ('author', 'name', 'price', 'start', 'lesson')
 
