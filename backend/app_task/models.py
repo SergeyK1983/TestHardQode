@@ -34,6 +34,10 @@ class Product(models.Model):
         verbose_name_plural = 'Продукты'
         ordering = ['id']
 
+    @property
+    def get_lesson_count(self):
+        return self.lesson.all().count()
+
     def __str__(self):
         return f"{self.id}-product: {self.name[:20]}"
 
@@ -87,14 +91,14 @@ class Group(models.Model):
         ordering = ['id']
 
     def save(self, *args, **kwargs):
-        if Product.objects.filter(id=self.product_id).exists():
-            product = Product.objects.get(id=self.product_id)
+        if Product.objects.filter(id=self.product_id.id).exists():
+            product = Product.objects.get(id=self.product_id.id)
             self.min_quantity = product.min_quantity
             self.max_quantity = product.max_quantity
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.id}- группа: {self.name}-{self.product_id}"
+        return f"{self.id}- группа: {self.name} - {self.product_id}"
 
 
 class StudentsInGroup(models.Model):

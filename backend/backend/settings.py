@@ -31,9 +31,19 @@ INSTALLED_APPS = [
 
     'django.contrib.sites',
     'django.contrib.flatpages',
+    'rest_framework',
 
     'app_task',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+
+    'DATETIME_FORMAT': "%d.%m.%Y %H:%M:%S",
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
