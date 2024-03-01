@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'rest_framework',
 
-    'app_task',
+    'app_task.apps.AppTaskConfig',
 ]
 
 REST_FRAMEWORK = {
