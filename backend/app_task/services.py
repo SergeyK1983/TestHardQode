@@ -54,6 +54,11 @@ def rebuild_groups(product_ins):
         print("Распределить не удалось. Число студентов в одной из групп меньше минимума")
         return False
 
+    if date.today() == product_ins.start.date():
+        # Можно обработать исключение
+        print("В этот день пересобирать группу уже поздно!")
+        return False
+
     for i in range(groups.count()):
         StudentsInGroup.objects.filter(group=groups[i]).delete()  # очистка групп
 
@@ -67,7 +72,6 @@ def rebuild_groups(product_ins):
         num_rem = users.count() - num * groups.count()  # остаток
         save_equal_quantity(users, groups, num, num_rem)
 
-        print(users.count()-num_rem, users.count())
         j = 0
         for i in range(users.count()-num_rem, users.count()):
             StudentsInGroup.objects.create(student=users[i].student, group=groups[j])
