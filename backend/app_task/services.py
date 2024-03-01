@@ -31,3 +31,45 @@ def assign_student_to_group(qs_stud_to_prod):
     return True
 
 
+def save_equal_quantity(users, groups, num, num_rem=0):
+    """ Равное распределение по группам. Используется в rebuild_groups() """
+    j = count = 0
+    for i in range(users.count()-num_rem):
+        StudentsInGroup.objects.create(student=users[i].student, group=groups[j])
+        count += 1
+        if count // num == 1:
+            j += 1
+            count = 0
+    print("Распределение завершено!")
+
+
+def rebuild_groups(product_ins):
+    """ Равномерное распределение. На вход подаётся экземпляр Продукта. """
+
+    users = product_ins.get_users.all()
+    groups = product_ins.group.all()
+
+    if users.count() / groups.count() < product_ins.min_quantity:
+        # Можно обработать исключение
+        print("Распределить не удалось. Число студентов в одной из групп меньше минимума")
+        return False
+
+    for i in range(groups.count()):
+        StudentsInGroup.objects.filter(group=groups[i]).delete()  # очистка групп
+
+    if users.count() % groups.count() == 0:
+        num = users.count() / groups.count()  # число в группе
+        save_equal_quantity(users, groups, num)
+        return True
+
+    if users.count() % groups.count() != 0:
+        num = users.count() // groups.count()  # число в группе
+        num_rem = users.count() - num * groups.count()  # остаток
+        save_equal_quantity(users, groups, num, num_rem)
+
+        print(users.count()-num_rem, users.count())
+        j = 0
+        for i in range(users.count()-num_rem, users.count()):
+            StudentsInGroup.objects.create(student=users[i].student, group=groups[j])
+            j += 1
+        return True
