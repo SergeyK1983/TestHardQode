@@ -29,6 +29,7 @@ def assign_student_to_group(qs_stud_to_prod):
             print("Добавить невозможно, группы полностью заполнены")
             return False
     return True
+# TODO доделать: защиту от двойных записей
 
 
 def save_equal_quantity(users, groups, num, num_rem=0):

@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions
 
 from .models import Product
-from .serializer import ProductSerializer, ProductLessonsSerializer
+from .serializer import ProductSerializer, ProductLessonsSerializer, ProductStudentsSerializer
 
 
 class ProductsListAPIView(generics.ListAPIView):
@@ -24,3 +24,13 @@ class ProductLessonsListAPIView(generics.ListAPIView):
     def get_queryset(self):
         return Product.objects.filter(id=self.kwargs['pk'])
 
+
+class ProductStudentsListAPIView(generics.ListAPIView):
+    """
+    Контроллер вывода списка студентов по конкретному продукту к которому пользователь имеет доступ.
+    Условно считаем, что пользователь аутентифицирован и авторизован, переходит по ссылке.
+    """
+    serializer_class = ProductStudentsSerializer
+
+    def get_queryset(self):
+        return Product.objects.filter(id=self.kwargs['pk'])

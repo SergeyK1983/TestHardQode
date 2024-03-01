@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Product, User, Lesson
+from .models import Product, User, Lesson, Group
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name']
+        fields = ['id', 'username', 'first_name', 'last_name']
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -42,3 +42,27 @@ class ProductLessonsSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('author', 'name', 'price', 'start', 'lesson')
 
+
+class StudentsListingField(serializers.RelatedField):
+    """ Поле get_users, модель StudentsInGroup """
+    def to_representation(self, value):
+        return f"студент/ка {value.student.first_name}"
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    """ Группы """
+    get_users = StudentsListingField(many=True, read_only=True)
+
+    class Meta:
+        model = Group
+        fields = ['name', 'get_users']
+
+
+class ProductStudentsSerializer(serializers.ModelSerializer):
+    """ Вывод информации о продукте и записанных студентах """
+
+    group = GroupSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Product
+        fields = ('author', 'name', 'start', 'group')
