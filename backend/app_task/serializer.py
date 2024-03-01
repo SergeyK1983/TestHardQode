@@ -66,3 +66,17 @@ class ProductStudentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ('author', 'name', 'start', 'group')
+
+
+class GroupFullnessSerializer(serializers.ModelSerializer):
+    """ Вывод групп с процентом заполненности """
+
+    fullness = serializers.SerializerMethodField('get_fullness')
+
+    class Meta:
+        model = Group
+        fields = ['name', 'fullness']
+
+    def get_fullness(self, instance):
+        return instance.fullness()
+

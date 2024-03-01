@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions
 
-from .models import Product
-from .serializer import ProductSerializer, ProductLessonsSerializer, ProductStudentsSerializer
+from .models import Product, Group
+from .serializer import ProductSerializer, ProductLessonsSerializer, ProductStudentsSerializer, GroupFullnessSerializer
 
 
 class ProductsListAPIView(generics.ListAPIView):
@@ -34,3 +34,11 @@ class ProductStudentsListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         return Product.objects.filter(id=self.kwargs['pk'])
+
+
+class GroupFullnessListAPIView(generics.ListAPIView):
+    """ Контроллер вывода групп с процентом заполненности """
+
+    serializer_class = GroupFullnessSerializer
+    queryset = Group.objects.all()
+

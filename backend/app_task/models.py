@@ -104,6 +104,12 @@ class Group(models.Model):
             self.max_quantity = product.max_quantity
         super().save(*args, **kwargs)
 
+    def fullness(self):
+        """ Процент заполненности группы """
+        num_st = self.get_users.all().count()
+        percent = round(num_st * 100 / self.max_quantity, 2)
+        return percent
+
     def __str__(self):
         return f"{self.id}- группа: {self.name} - {self.product_id}"
 
