@@ -1,7 +1,8 @@
 from rest_framework import generics, permissions
 
 from .models import Product, Group
-from .serializer import ProductSerializer, ProductLessonsSerializer, ProductStudentsSerializer, GroupFullnessSerializer
+from .serializer import ProductSerializer, ProductLessonsSerializer, ProductStudentsSerializer, GroupFullnessSerializer, \
+    ProductPercentageSerializer
 
 
 class ProductsListAPIView(generics.ListAPIView):
@@ -11,6 +12,15 @@ class ProductsListAPIView(generics.ListAPIView):
     """
     permission_classes = [permissions.AllowAny]
     serializer_class = ProductSerializer
+    queryset = Product.objects.all()
+
+
+class ProductsPercentageListAPIView(generics.ListAPIView):
+    """
+    Контроллер списка продуктов с процентом покупаемости.
+    """
+    permission_classes = [permissions.AllowAny]
+    serializer_class = ProductPercentageSerializer
     queryset = Product.objects.all()
 
 
@@ -27,8 +37,7 @@ class ProductLessonsListAPIView(generics.ListAPIView):
 
 class ProductStudentsListAPIView(generics.ListAPIView):
     """
-    Контроллер вывода списка студентов по конкретному продукту к которому пользователь имеет доступ.
-    Условно считаем, что пользователь аутентифицирован и авторизован, переходит по ссылке.
+    Контроллер вывода списка студентов по конкретному продукту
     """
     serializer_class = ProductStudentsSerializer
 

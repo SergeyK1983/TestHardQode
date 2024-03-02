@@ -41,6 +41,14 @@ class Product(models.Model):
     def get_lesson_count(self):
         return self.lesson.all().count()
 
+    @property
+    def percentage_of_purchases(self):
+        """ Процент покупок """
+        all_students = User.objects.filter(student=True).count()
+        students = self.get_users.all().count()
+        percent = round(students / all_students * 100, 2)
+        return percent
+
     def __str__(self):
         return f"{self.id}-product: {self.name[:20]}"
 

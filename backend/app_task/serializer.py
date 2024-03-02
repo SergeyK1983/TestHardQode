@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name']
+        fields = ['username', 'first_name', 'last_name']
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -41,6 +41,19 @@ class ProductLessonsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ('author', 'name', 'price', 'start', 'lesson')
+
+
+class ProductPercentageSerializer(serializers.ModelSerializer):
+    """ Вывод информации о продукте с процентом покупаемости """
+
+    percentage = serializers.SerializerMethodField('get_percentage')
+
+    class Meta:
+        model = Product
+        fields = ('author', 'name', 'price', 'start', 'percentage')
+
+    def get_percentage(self, instance):
+        return instance.percentage_of_purchases
 
 
 class StudentsListingField(serializers.RelatedField):
