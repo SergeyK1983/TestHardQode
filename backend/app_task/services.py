@@ -45,7 +45,7 @@ def save_equal_quantity(users, groups, num, num_rem=0):
 
 
 def rebuild_groups(product_ins):
-    """ Равномерное распределение. На вход подаётся экземпляр Продукта. """
+    """ Пересборка групп на равномерное количество учащихся. На вход подаётся экземпляр Продукта. """
 
     users = product_ins.get_users.all()
     groups = product_ins.group.all()
@@ -61,7 +61,7 @@ def rebuild_groups(product_ins):
         return False
 
     for i in range(groups.count()):
-        StudentsInGroup.objects.filter(group=groups[i]).delete()  # очистка групп
+        StudentsInGroup.objects.filter(group=groups[i]).delete()
 
     if users.count() % groups.count() == 0:
         num = users.count() / groups.count()  # число в группе

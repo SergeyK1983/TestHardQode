@@ -2,7 +2,7 @@ from rest_framework import generics, permissions
 
 from .models import Product, Group
 from .serializer import ProductSerializer, ProductLessonsSerializer, ProductStudentsSerializer, GroupFullnessSerializer, \
-    ProductPercentageSerializer
+    ProductStatisticsSerializer
 
 
 class ProductsListAPIView(generics.ListAPIView):
@@ -15,12 +15,12 @@ class ProductsListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
 
 
-class ProductsPercentageListAPIView(generics.ListAPIView):
+class ProductsStatisticsListAPIView(generics.ListAPIView):
     """
-    Контроллер списка продуктов с процентом покупаемости.
+    Контроллер статистики продуктов.
     """
     permission_classes = [permissions.AllowAny]
-    serializer_class = ProductPercentageSerializer
+    serializer_class = ProductStatisticsSerializer
     queryset = Product.objects.all()
 
 

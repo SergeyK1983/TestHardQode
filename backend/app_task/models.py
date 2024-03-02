@@ -42,12 +42,26 @@ class Product(models.Model):
         return self.lesson.all().count()
 
     @property
+    def get_students_count(self):
+        return self.get_users.all().count()
+
+    @property
     def percentage_of_purchases(self):
         """ Процент покупок """
         all_students = User.objects.filter(student=True).count()
         students = self.get_users.all().count()
         percent = round(students / all_students * 100, 2)
         return percent
+
+    @property
+    def avg_fullness_group(self):
+        """ Средняя заполненность групп """
+        groups = self.group.all()
+        fullness = 0
+        for group in groups:
+            fullness += group.fullness()
+        avg_fullness = round(fullness / groups.count(), 2)
+        return avg_fullness
 
     def __str__(self):
         return f"{self.id}-product: {self.name[:20]}"

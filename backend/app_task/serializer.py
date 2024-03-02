@@ -43,19 +43,6 @@ class ProductLessonsSerializer(serializers.ModelSerializer):
         fields = ('author', 'name', 'price', 'start', 'lesson')
 
 
-class ProductPercentageSerializer(serializers.ModelSerializer):
-    """ Вывод информации о продукте с процентом покупаемости """
-
-    percentage = serializers.SerializerMethodField('get_percentage')
-
-    class Meta:
-        model = Product
-        fields = ('author', 'name', 'price', 'start', 'percentage')
-
-    def get_percentage(self, instance):
-        return instance.percentage_of_purchases
-
-
 class StudentsListingField(serializers.RelatedField):
     """ Поле get_users, модель StudentsInGroup """
     def to_representation(self, value):
@@ -92,4 +79,26 @@ class GroupFullnessSerializer(serializers.ModelSerializer):
 
     def get_fullness(self, instance):
         return instance.fullness()
+
+
+class ProductStatisticsSerializer(serializers.ModelSerializer):
+    """ Вывод статистики о всех продуктах """
+
+    percentage = serializers.SerializerMethodField('get_percentage')
+    students_count = serializers.SerializerMethodField('get_students')
+    avg_fullness = serializers.SerializerMethodField('get_avg_fullness')
+    group = GroupFullnessSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Product
+        fields = ('name', 'students_count', 'avg_fullness', 'percentage', 'group')
+
+    def get_percentage(self, instance):
+        return instance.percentage_of_purchases
+
+    def get_students(self, instance):
+        return instance.get_students_count
+
+    def get_avg_fullness(self, instance):
+        return instance.avg_fullness_group
 
