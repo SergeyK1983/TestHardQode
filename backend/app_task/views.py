@@ -32,7 +32,7 @@ class ProductLessonsListAPIView(generics.ListAPIView):
     serializer_class = ProductLessonsSerializer
 
     def get_queryset(self):
-        return Product.objects.filter(id=self.kwargs['pk'])
+        return Product.objects.filter(id=self.kwargs['id'])
 
 
 class ProductStudentsListAPIView(generics.ListAPIView):
@@ -42,7 +42,7 @@ class ProductStudentsListAPIView(generics.ListAPIView):
     serializer_class = ProductStudentsSerializer
 
     def get_queryset(self):
-        return Product.objects.filter(id=self.kwargs['pk'])
+        return Product.objects.filter(id=self.kwargs['id'])
 
 
 class GroupFullnessListAPIView(generics.ListAPIView):

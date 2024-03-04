@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     'rest_framework',
+    'drf_yasg',
 
     'app_task.apps.AppTaskConfig',
 ]
