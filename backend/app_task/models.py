@@ -74,6 +74,7 @@ class StudentsToProduct(models.Model):
     """
     student = models.ForeignKey(User, related_name='product', to_field='username', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='get_users', on_delete=models.CASCADE)
+    paid = models.BooleanField(default=False, verbose_name="Оплачено")
 
     class Meta:
         verbose_name = 'Допущенные студенты'

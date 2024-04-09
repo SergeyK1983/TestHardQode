@@ -1,6 +1,6 @@
 from rest_framework import generics, permissions
 
-from .models import Product, Group
+from .models import Product, Group, User
 from .serializer import ProductSerializer, ProductLessonsSerializer, ProductStudentsSerializer, GroupFullnessSerializer, \
     ProductStatisticsSerializer
 
@@ -12,7 +12,14 @@ class ProductsListAPIView(generics.ListAPIView):
     """
     permission_classes = [permissions.AllowAny]
     serializer_class = ProductSerializer
-    queryset = Product.objects.all()
+
+    def get_queryset(self):
+        user_id = self.request.user.id
+        queryset = Product.objects.all()
+        if user_id:
+            user = User.objects.get(id=user_id)
+            queryset = Product.objects.exclude(students=user)
+        return queryset
 
 
 class ProductsStatisticsListAPIView(generics.ListAPIView):

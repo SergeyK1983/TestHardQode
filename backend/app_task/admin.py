@@ -11,7 +11,8 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class StudentsToProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'student', 'product')
+    list_display = ('id', 'student', 'product', 'paid')
+    list_editable = ['paid']
 
 
 class LessonAdmin(admin.ModelAdmin):

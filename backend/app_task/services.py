@@ -1,5 +1,8 @@
+import logging
 from datetime import date
 from .models import StudentsInGroup
+
+logger = logging.getLogger(__name__)
 
 
 # При получении доступа к продукту, распределять пользователя в группу. Если продукт ещё не начался,
@@ -26,7 +29,7 @@ def assign_student_to_group(qs_stud_to_prod):
                 break
         else:
             # Можно обработать исключение
-            print("Добавить невозможно, группы полностью заполнены")
+            logger.info("Добавить невозможно, группы полностью заполнены")
             return False
     return True
 # TODO доделать: защиту от двойных записей
@@ -41,7 +44,7 @@ def save_equal_quantity(users, groups, num, num_rem=0):
         if count // num == 1:
             j += 1
             count = 0
-    print("Распределение завершено!")
+    logger.info("Распределение завершено!")
 
 
 def rebuild_groups(product_ins):
@@ -52,12 +55,12 @@ def rebuild_groups(product_ins):
 
     if users.count() / groups.count() < product_ins.min_quantity:
         # Можно обработать исключение
-        print("Распределить не удалось. Число студентов в одной из групп меньше минимума")
+        logger.info("Распределить не удалось. Число студентов в одной из групп меньше минимума")
         return False
 
     if date.today() == product_ins.start.date():
         # Можно обработать исключение
-        print("В этот день пересобирать группу уже поздно!")
+        logger.info("В этот день пересобирать группу уже поздно!")
         return False
 
     for i in range(groups.count()):
